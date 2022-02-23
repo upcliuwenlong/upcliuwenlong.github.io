@@ -1,0 +1,379 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Few-Shot Learning | LOONG'S SPACE</title><meta name="keywords" content="Few-Shot Learning,Deep Learning"><meta name="author" content="Loong"><meta name="copyright" content="Loong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Few-Shot Learning 基本概念 问题引入  仅凭借左边两类四个样本不能够训练出一个泛化性能良好的深度神经网络来回答上述问题 Supervised Learning vs. Few-Shot Learning Traditional supervised learning   Test samples are never seen before Test samples are fro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Few-Shot Learning">
+<meta property="og:url" content="http://upcliuwenlong.github.io/2022/02/23/Deep-Learning/Few-Shot-Learning/index.html">
+<meta property="og:site_name" content="LOONG&#39;S SPACE">
+<meta property="og:description" content="Few-Shot Learning 基本概念 问题引入  仅凭借左边两类四个样本不能够训练出一个泛化性能良好的深度神经网络来回答上述问题 Supervised Learning vs. Few-Shot Learning Traditional supervised learning   Test samples are never seen before Test samples are fro">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://upcliuwenlong.github.io/img/Deep-Learning/Few-Shot-Learning/cover.jpg">
+<meta property="article:published_time" content="2022-02-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-22T16:00:00.000Z">
+<meta property="article:author" content="Loong">
+<meta property="article:tag" content="Few-Shot Learning">
+<meta property="article:tag" content="Deep Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://upcliuwenlong.github.io/img/Deep-Learning/Few-Shot-Learning/cover.jpg"><link rel="shortcut icon" href="/img/head.jpg"><link rel="canonical" href="http://upcliuwenlong.github.io/2022/02/23/Deep-Learning/Few-Shot-Learning/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Few-Shot Learning',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-02-23 00:00:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/font/iconfont.css"><meta name="generator" content="Hexo 5.4.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-jiudianzhusu"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw iconfont icon-shouhuishuben"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw iconfont icon-shuben"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw iconfont icon-small035-tag"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw iconfont icon-fenlei"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw iconfont icon-yule"></i><span> 记录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/gallery/"><i class="fa-fw iconfont icon-tubiaozhizuomoban"></i><span> 图册</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw iconfont icon-tubiaozhizuomoban-"></i><span> 书评</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw iconfont icon-dianying"></i><span> 影记</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw iconfont icon-pinglun1"></i><span> 留言</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/Deep-Learning/Few-Shot-Learning/cover.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LOONG'S SPACE</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont icon-jiudianzhusu"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw iconfont icon-shouhuishuben"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw iconfont icon-shuben"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw iconfont icon-small035-tag"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw iconfont icon-fenlei"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw iconfont icon-yule"></i><span> 记录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/gallery/"><i class="fa-fw iconfont icon-tubiaozhizuomoban"></i><span> 图册</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw iconfont icon-tubiaozhizuomoban-"></i><span> 书评</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw iconfont icon-dianying"></i><span> 影记</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw iconfont icon-pinglun1"></i><span> 留言</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Few-Shot Learning</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-02-22T16:00:00.000Z" title="发表于 2022-02-23 00:00:00">2022-02-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-02-22T16:00:00.000Z" title="更新于 2022-02-23 00:00:00">2022-02-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Few-Shot-Learning/">Few-Shot Learning</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Few-Shot Learning"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="Few-Shot-Learning-基本概念">Few-Shot Learning 基本概念</h2>
+<h3 id="问题引入">问题引入</h3>
+<p><img src="image-20220222204925496.png" alt="image-20220222204925496"></p>
+<p>仅凭借左边两类四个样本不能够训练出一个泛化性能良好的深度神经网络来回答上述问题</p>
+<h3 id="Supervised-Learning-vs-Few-Shot-Learning">Supervised Learning vs. Few-Shot Learning</h3>
+<h4 id="Traditional-supervised-learning">Traditional supervised learning</h4>
+<p><img src="image-20220222220652970.png" alt="image-20220222220652970"></p>
+<ul>
+<li>Test samples are never seen before</li>
+<li>Test samples are from known classes</li>
+</ul>
+<h4 id="Few-shot-learning">Few-shot learning</h4>
+<p><img src="image-20220222220930371.png" alt="image-20220222220930371"></p>
+<ul>
+<li>Query samples are never seen before</li>
+<li>Query samples are from unknown classes</li>
+</ul>
+<h3 id="Few-shot-learning做什么">Few-shot learning做什么</h3>
+<p><img src="image-20220222221030854.png" alt="image-20220222221030854"></p>
+<p>Few-shot learning希望模型在一个大的Training Set（每个类别个体数目很多）学习到事物之间的异同，仅通过给出一个Support Set（每个类别个体数目很少），而且在训练期间也没有见过Support Set中的类别，就期待模型能够回答给出的Query Sample是否是Support Set中某一类</p>
+<h3 id="与Meta-Learning的关系">与Meta Learning的关系</h3>
+<ul>
+<li>
+<p>Few-shot learning is a kind of meta learning.</p>
+</li>
+<li>
+<p>Meta learning: learn to learn. <em>Few-shot learning正是在Training Set学会了学习</em><mark>（分辨事物异同）</mark><em>，因为它能够对没有见过的类别图像Support Set以及Query Sample之间推断相似度</em></p>
+</li>
+</ul>
+<h3 id="基本术语">基本术语</h3>
+<h4 id="k-way-n-shot-Support-Set">k-way n-shot Support Set</h4>
+<p><img src="image-20220222222923340.png" alt="image-20220222222923340"></p>
+<ul>
+<li>k-way: the support set has k classes</li>
+<li>n-shot: every class has n samples</li>
+</ul>
+<h3 id="Prediction-Accuracy">Prediction Accuracy</h3>
+<p>下面的结论很容易从直觉上理解</p>
+<p><img src="image-20220222223046078.png" alt="image-20220222223046078"></p>
+<p><img src="image-20220222223109696.png" alt="image-20220222223109696"></p>
+<p><img src="image-20220222223120622.png" alt="image-20220222223120622"></p>
+<p><img src="image-20220222223137909.png" alt="image-20220222223137909"></p>
+<h3 id="Few-shot-learning怎么做">Few-shot learning怎么做</h3>
+<p>Basic Idea：Learn a <mark>similarity function</mark>: sim(x, x’)</p>
+<p><img src="image-20220222223430083.png" alt="image-20220222223430083"></p>
+<p>Ideally, sim (x<sub>1</sub>,x<sub>2</sub>) = 1, sim(x<sub>1</sub>,x<sub>3</sub>) = 0, and sim(x<sub>2</sub>,x<sub>3</sub>) = 0</p>
+<ul>
+<li>First, learn a similarity function from large-scale training dataset</li>
+</ul>
+<p><img src="image-20220223125941808.png" alt="image-20220223125941808"></p>
+<ul>
+<li>Then, apply the similarity function for prediction
+<ul>
+<li>Compare the query with every sample in the support set</li>
+<li>Find the sample with the highest similarity score</li>
+</ul>
+</li>
+</ul>
+<p><img src="image-20220223130107714.png" alt="image-20220223130107714"></p>
+<h2 id="Siamese-Network">Siamese Network</h2>
+<h3 id="Learning-Pairwise-Similarity-Scores">Learning Pairwise Similarity Scores</h3>
+<ul>
+<li>在Training Set中构造Training Data，准备相同数量的正负样本，正样本是同类别的sample pair，负样本是不同类别的sample pair</li>
+</ul>
+<p><img src="image-20220223131955166.png" alt="image-20220223131955166"></p>
+<ul>
+<li>一个卷积神经网络用作特征提取</li>
+</ul>
+<p><img src="image-20220223132347971.png" alt="image-20220223132347971"></p>
+<ul>
+<li>
+<p>将sample pair输入到同一个神经网络，得到提取的特征h<sub>1</sub>与h<sub>2</sub>，二者相减后求绝对值得到z向量表示二者的差异</p>
+<p><img src="image-20220223132722618.png" alt="image-20220223132722618"></p>
+</li>
+<li>
+<p>z向量通过<strong>全连接</strong>层得到一个标量，经过<strong>sigmoid</strong>运算后与标签求<strong>cross entropy loss</strong><br>
+<img src="image-20220223132935994.png" alt="image-20220223132935994"></p>
+</li>
+<li>
+<p>梯度回传更新网络参数</p>
+</li>
+</ul>
+<p><img src="image-20220223133120429.png" alt="image-20220223133120429"></p>
+<ul>
+<li>对于负样本</li>
+</ul>
+<p><img src="image-20220223134023348.png" alt="image-20220223134023348"></p>
+<ul>
+<li>One-Shot Prediction<br>
+<img src="image-20220223150730664.png" alt="image-20220223150730664"></li>
+</ul>
+<h3 id="Triplet-Loss">Triplet Loss</h3>
+<ul>
+<li>
+<p>构造训练数据，sample一张图片作为锚点，在同类别中sample一张作为正样本，在另一类中sample一张作为负样本<br>
+<img src="image-20220223134308943.png" alt="image-20220223134308943"></p>
+</li>
+<li>
+<p>输入同一个神经网络，分别得到正负样本与锚点特征向量的差的二范数的平方<img src="image-20220223134732208.png" alt="image-20220223134732208"><br>
+我们希望，d<sup>+</sup>越小越好，d<sup>-</sup>越大越好<br>
+<img src="image-20220223135115372.png" alt="image-20220223135115372"></p>
+</li>
+<li>
+<p>loss定义</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>I</mi><mi>f</mi><mtext> </mtext><msup><mi>d</mi><mo>−</mo></msup><mo>≥</mo><msup><mi>d</mi><mo>+</mo></msup><mo>+</mo><mi>α</mi><mo separator="true">,</mo><mi>t</mi><mi>h</mi><mi>e</mi><mi>n</mi><mtext> </mtext><mi>n</mi><mi>o</mi><mtext> </mtext><mi>l</mi><mi>o</mi><mi>s</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">If\ d^- ≥ d^+ + α, then\ no\ loss
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0158em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mspace"> </span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8213em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9047em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8213em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mspace"> </span><span class="mord mathnormal">n</span><span class="mord mathnormal">o</span><span class="mspace"> </span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">oss</span></span></span></span></span></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>O</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>r</mi><mi>w</mi><mi>i</mi><mi>s</mi><mi>e</mi><mo separator="true">,</mo><mi>t</mi><mi>h</mi><mi>e</mi><mtext> </mtext><mi>l</mi><mi>o</mi><mi>s</mi><mi>s</mi><mtext> </mtext><mi>i</mi><mi>s</mi><mtext> </mtext><msup><mi>d</mi><mo>+</mo></msup><mo>+</mo><mi>α</mi><mo>−</mo><msup><mi>d</mi><mo>−</mo></msup></mrow><annotation encoding="application/x-tex">Otherwise, the\ loss\ is\ d^++α-d^-
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0158em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">Ot</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mord mathnormal">i</span><span class="mord mathnormal">se</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">e</span><span class="mspace"> </span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">oss</span><span class="mspace"> </span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mspace"> </span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8213em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8213em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8213em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mi>o</mi><mi>s</mi><mi>s</mi><mo stretchy="false">(</mo><msup><mi>X</mi><mo>+</mo></msup><mo separator="true">,</mo><msup><mi>X</mi><mi>a</mi></msup><mo separator="true">,</mo><msup><mi>X</mi><mo>−</mo></msup><mo stretchy="false">)</mo><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><msup><mi>d</mi><mo>+</mo></msup><mo>+</mo><mi>α</mi><mo>−</mo><msup><mi>d</mi><mo>−</mo></msup><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">Loss (X^+,X^a,X^-) = max \{0,d^++α-d^-\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0713em;vertical-align:-0.25em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal">oss</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8213em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7144em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8213em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0713em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8213em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0713em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8213em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span><span class="mclose">}</span></span></span></span></span></p>
+</li>
+<li>
+<p>Update the CNN (function f) to decrease the loss</p>
+</li>
+<li>
+<p>One-Shot Prediction</p>
+</li>
+</ul>
+<p><img src="image-20220223150610902.png" alt="image-20220223150610902"></p>
+<h2 id="Pretraining-and-Fine-Tuning">Pretraining and Fine Tuning</h2>
+<h3 id="Few-Shot-Prediction-Using-Pretrained-CNN">Few-Shot Prediction Using Pretrained CNN</h3>
+<ul>
+<li>The CNN can be pretrained using standard supervised learning or Siamese network</li>
+<li>Pretrain a CNN for feature extraction</li>
+</ul>
+<p><img src="image-20220223234608539.png" alt="image-20220223234608539"></p>
+<p>以3-way 2-shot为例，预训练的网络对每个类别提取到的特征向量求平均，再让其二范数等于1得到μ<sub>1</sub>,μ<sub>2</sub>,μ<sub>3</sub>三个向量作为每个类别的表征</p>
+<h3 id="Making-Few-Shot-Prediction">Making Few-Shot Prediction</h3>
+<p><img src="image-20220223235324536.png" alt="image-20220223235324536"></p>
+<p>对于Query图片同样输入到预训练网络经过normalize得到二范数为1的向量，我们将矩阵M与q向量相乘，即是在求μ<sub>1</sub>,μ<sub>2</sub>,μ<sub>3</sub>与q向量的余弦相似度，对结果进行softmax得到3维向量，数值最大的分量所在类别即视为对Query的预测结果，当然，对于下面的例子很容易看出q与μ<sub>1</sub>最为接近，属于第一个类别</p>
+<p><img src="image-20220223235942962.png" alt="image-20220223235942962"></p>
+<h3 id="Fine-Tuning">Fine-Tuning</h3>
+<p>上面的Pretrain方法我们是利用了预训练的网络再接一个softmax分类器，而且softmax分类器的参数<strong>W</strong>是用下面图示方法设置并固定的，<strong>b</strong>采用的是零向量</p>
+<p><img src="image-20220224001107860.png" alt="image-20220224001107860"></p>
+<p>其实我们还可以利用带有标注信息的Support Set对这个分类器的参数甚至是预训练的特征提取网络进行Fine-Tuning，下面这个方法简单但涨点明显</p>
+<ul>
+<li>
+<p>Let (<strong>x<sub>j</sub></strong>,<strong>y<sub>j</sub></strong>) be a labeled sample in the support set</p>
+</li>
+<li>
+<p><strong>f(x<sub>j</sub>)</strong> is the feature vector extracted by the pretrained CNN</p>
+</li>
+<li>
+<p><strong>p<sub>j</sub></strong> = Softmax(<strong>W·f(x<sub>j</sub>)</strong> + <strong>b</strong>) is the prediction</p>
+</li>
+<li>
+<p>min ∑<sub>j</sub> CrossEntropy(<strong>y<sub>j</sub></strong>,<strong>p<sub>j</sub></strong>) + Regularization <em>(Sum over all the samples in the support set)</em></p>
+</li>
+</ul>
+<h4 id="Trick-1-A-Good-Initialization">Trick 1: A Good Initialization</h4>
+<ul>
+<li>A good initialization: W = M and b = 0</li>
+</ul>
+<h4 id="Trick-2-Entropy-Regularization">Trick 2: Entropy Regularization</h4>
+<ul>
+<li>Let <strong>x</strong> be a query sample</li>
+<li><strong>p</strong> = Softmax(<strong>W·f(x<sub>j</sub>)</strong> )+ <strong>b</strong> is the prediction</li>
+<li>Entropy: ℍ(<strong>p</strong>)  = − ∑<sub>i</sub> p<sub>i</sub>logp<sub>i</sub></li>
+<li>Entropy regularization: mean of ℍ(<strong>p</strong>) , for all query samples</li>
+<li>Encourage the entropy regularization to be small</li>
+</ul>
+<p><img src="image-20220224003605181.png" alt="image-20220224003605181"></p>
+<h4 id="Trick-3-Cosine-Similarity-Softmax-Classifier">Trick 3: Cosine Similarity + Softmax Classifier</h4>
+<p>Standard Softmax classifier：</p>
+<p><img src="image-20220224003717265.png" alt="image-20220224003717265"></p>
+<p>Replacing inner product by cosine similarity:</p>
+<p><img src="image-20220224003752600.png" alt="image-20220224003752600"></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Few-Shot-Learning/">Few-Shot Learning</a><a class="post-meta__tags" href="/tags/Deep-Learning/">Deep Learning</a></div><div class="post_share"><div class="social-share" data-image="/img/Deep-Learning/Few-Shot-Learning/cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2022/02/23/Markdown/Markdown-Cheat-Sheet/"><img class="prev-cover" src="/img/Markdown/Markdown-Cheat-Sheet/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Markdown Cheat Sheet</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Loong</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/upcliuwenlong"><i class="fab fa-github"></i><span>Github</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">李灿伟是郭楠，同意的扣1</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Few-Shot-Learning-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">Few-Shot Learning 基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%BC%95%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text">问题引入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Supervised-Learning-vs-Few-Shot-Learning"><span class="toc-number">1.2.</span> <span class="toc-text">Supervised Learning vs. Few-Shot Learning</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Traditional-supervised-learning"><span class="toc-number">1.2.1.</span> <span class="toc-text">Traditional supervised learning</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Few-shot-learning"><span class="toc-number">1.2.2.</span> <span class="toc-text">Few-shot learning</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Few-shot-learning%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-number">1.3.</span> <span class="toc-text">Few-shot learning做什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8EMeta-Learning%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.4.</span> <span class="toc-text">与Meta Learning的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%9C%AF%E8%AF%AD"><span class="toc-number">1.5.</span> <span class="toc-text">基本术语</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#k-way-n-shot-Support-Set"><span class="toc-number">1.5.1.</span> <span class="toc-text">k-way n-shot Support Set</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Prediction-Accuracy"><span class="toc-number">1.6.</span> <span class="toc-text">Prediction Accuracy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Few-shot-learning%E6%80%8E%E4%B9%88%E5%81%9A"><span class="toc-number">1.7.</span> <span class="toc-text">Few-shot learning怎么做</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Siamese-Network"><span class="toc-number">2.</span> <span class="toc-text">Siamese Network</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Learning-Pairwise-Similarity-Scores"><span class="toc-number">2.1.</span> <span class="toc-text">Learning Pairwise Similarity Scores</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Triplet-Loss"><span class="toc-number">2.2.</span> <span class="toc-text">Triplet Loss</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pretraining-and-Fine-Tuning"><span class="toc-number">3.</span> <span class="toc-text">Pretraining and Fine Tuning</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Few-Shot-Prediction-Using-Pretrained-CNN"><span class="toc-number">3.1.</span> <span class="toc-text">Few-Shot Prediction Using Pretrained CNN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Making-Few-Shot-Prediction"><span class="toc-number">3.2.</span> <span class="toc-text">Making Few-Shot Prediction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fine-Tuning"><span class="toc-number">3.3.</span> <span class="toc-text">Fine-Tuning</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Trick-1-A-Good-Initialization"><span class="toc-number">3.3.1.</span> <span class="toc-text">Trick 1: A Good Initialization</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Trick-2-Entropy-Regularization"><span class="toc-number">3.3.2.</span> <span class="toc-text">Trick 2: Entropy Regularization</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Trick-3-Cosine-Similarity-Softmax-Classifier"><span class="toc-number">3.3.3.</span> <span class="toc-text">Trick 3: Cosine Similarity + Softmax Classifier</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/23/Markdown/Markdown-Cheat-Sheet/" title="Markdown Cheat Sheet"><img src="/img/Markdown/Markdown-Cheat-Sheet/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Markdown Cheat Sheet"/></a><div class="content"><a class="title" href="/2022/02/23/Markdown/Markdown-Cheat-Sheet/" title="Markdown Cheat Sheet">Markdown Cheat Sheet</a><time datetime="2022-02-22T16:00:00.000Z" title="发表于 2022-02-23 00:00:00">2022-02-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/23/Deep-Learning/Few-Shot-Learning/" title="Few-Shot Learning"><img src="/img/Deep-Learning/Few-Shot-Learning/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Few-Shot Learning"/></a><div class="content"><a class="title" href="/2022/02/23/Deep-Learning/Few-Shot-Learning/" title="Few-Shot Learning">Few-Shot Learning</a><time datetime="2022-02-22T16:00:00.000Z" title="发表于 2022-02-23 00:00:00">2022-02-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Loong</div><div class="github-badge"><a style="color:#fff" rel="external nofollow noopener noreferrer" href="https://hexo.io/" target="_blank" title="由 Hexo 强力驱动" data-pjax-state=""><span class="badge-subject">Powered</span><span class="badge-value bg-blue">Hexo</span></a></div><div class="github-badge"><a style="color:#fff" rel="external nofollow noopener noreferrer" href="https://coding.net/" target="_blank" title="静态网页托管于 Nginx 和 Coding Pages" data-pjax-state=""><span class="badge-subject">Hosted</span><span class="badge-value bg-brightgreen">Coding</span></a></div><div class="github-badge"><a style="color:#fff" rel="external nofollow noopener noreferrer" href="https://nginx.org/" target="_blank" title="静态网页托管于 Nginx 和 Coding Pages" data-pjax-state=""><span class="badge-subject">Hosted</span><span class="badge-value bg-brightgreen">Nginx</span></a></div><div class="github-badge"><a style="color:#fff" rel="external nofollow noopener noreferrer" href="https://www.jsdelivr.com/" target="_blank" title="jsDelivr 提供 CDN 加速服务" data-pjax-state=""><span class="badge-subject">CDN</span><span class="badge-value bg-orange">jsDelivr</span></a></div><div class="github-badge"><a style="color:#fff" rel="external nofollow noopener noreferrer" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="本站点采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可" data-pjax-state=""><span class="badge-subject"><i class="fa fa-copyright"></i></span><span class="badge-value bg-gradient">BY-NC-SA 4.0</span></a></div><div class="github-badge"><a style="color:#fff" rel="external nofollow noopener noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" title="主题" data-pjax-state=""><span class="badge-subject">Theme</span><span class="badge-value bg-blueviolet">Butterfly</span></a></div><div class="github-badge"><a style="color:#fff" rel="external nofollow noopener noreferrer" href="http://www.beian.miit.gov.cn/" target="_blank" title="备案" data-pjax-state=""><span class="badge-subject">鲁ICP备</span><span class="badge-value bg-orange">20027461号</span></a></div><div class="github-badge"><span class="badge-subject">本站已安全运行</span><a style="text-decoration:none;color:#fff;background:#007ec6;padding: 4px 4px 4px 6px;border-top-right-radius: 4px;border-bottom-right-radius: 4px;width:168px;display: inline-block;" id="running-time" rel="external nofollow noopener noreferrer" href="" target="_blank" title="网站运行时间" data-pjax-state=""></a></div><div id="running-time"><script>setInterval(() => {
+  let create_time = Math.round(new Date('2022-02-18 00:00:00').getTime() / 1000);
+  let timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+  let second = timestamp - create_time;
+  let time = new Array(0, 0, 0, 0, 0);
+  if (second >= 365 * 24 * 3600) {
+    time[0] = parseInt(second / (365 * 24 * 3600));
+    second %= 365 * 24 * 3600;
+  }
+  if (second >= 24 * 3600) {
+    time[1] = parseInt(second / (24 * 3600));
+    second %= 24 * 3600;
+  }
+  if (second >= 3600) {
+    time[2] = parseInt(second / 3600);
+    second %= 3600;
+  }
+  if (second >= 60) {
+    time[3] = parseInt(second / 60);
+    second %= 60;
+  }
+  if (second > 0) {
+    time[4] = second;
+  }
+  currentTimeHtml = time[0] + ' 年 ' + time[1] + '  天  ' + time[2] + '  时  ' + time[3] + '  分  ' + time[4] + '  秒';
+  document.getElementById("running-time").innerHTML = currentTimeHtml;
+}, 1000);</script></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '4RL6O3GCzFdvOnuug9BpVgta-gzGzoHsz',
+      appKey: 'fjQJod6Q63ozEGPeL1g4wDWk',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/custom.js"></script><div class="aplayer no-destroy" data-id="8368222158" data-server="tencent" data-type="playlist" data-fixed="true" data-autoplay="false"> </div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
