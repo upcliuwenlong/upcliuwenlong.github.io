@@ -165,7 +165,7 @@ if (header.getAttribute('class') == 'post-bg') {
     }
   })
 } else {
-  document.styleSheets[0].addRule(':root', '--main: #49B1F5')
+  document.styleSheets[0].addRule(':root', '--main: #cd5c5c')
   document.styleSheets[0].addRule(':root', '--second: #FFF')
   document.styleSheets[0].addRule(':root', `--main-light: rgba(73, 177, 245, .4)`)
   document.styleSheets[0].addRule(':root', '--main-shadow: 0 8px 12px -3px rgba(73, 177, 245, .2)')
